@@ -24,7 +24,8 @@ dp = Dispatcher()
 # Хэндлер на команду /start
 @dp.message(Command("start"))
 async def say_hello(message: types.Message):
-    await message.answer("Hello!")
+    await message.answer("Hello! вот что я умею: вы можете зарегистрироваться с помощью /register, и узнать свое расписание с помощью /my_schedule. "
+                         "Для админа доступны функции /update_schedule и /send_message")
 
 @dp.message(Command("send_message"))
 async def send_message_get_class(message: types.Message,  state: FSMContext):

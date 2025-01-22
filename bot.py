@@ -79,7 +79,7 @@ async def download_schedule(message: Message):
 
 @dp.callback_query(F.data == 'button_schedule')  # [2]
 async def get_schedule(callback: CallbackQuery):
-    document = FSInputFile('schedule.pdf')
+    document = FSInputFile('data/schedule.pdf')
     await bot.send_document(callback.from_user.id, document)
     await callback.answer()
 

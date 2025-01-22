@@ -7,7 +7,7 @@ from aiogram.types import Message, ContentType, CallbackQuery
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types.input_file import FSInputFile
 
-from code import polls, homework
+import polls, homework
 from db_work import get_users, is_admin, save_user, get_homework
 from keyboards import get_buttons, get_poll, get_poll_end
 from file_work import update_results, get_results, get_winner, get_complited, update_complited, clear_complited, \
@@ -110,7 +110,7 @@ async def getting_birthday_photo(message: Message, state: FSMContext):
 
 
 @dp.callback_query(F.data.startswith("subjects_2_"))
-async def hw_update(callback: CallbackQuery, state: FSMContext):
+async def hw_update(callback: CallbackQuery):
     subject = callback.data.split("_")[2]
     text, file1, file2, file3 = await get_homework(subject)
     await callback.message.answer(f'{text}')

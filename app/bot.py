@@ -7,12 +7,10 @@ from aiogram.types import Message, ContentType, CallbackQuery
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types.input_file import FSInputFile
 
-import polls
-import homework
-import file_work
-from db_work import get_users, is_admin, save_user, get_homework
-from keyboards import get_buttons, get_poll, get_poll_end
-from file_work import update_results, get_results, get_winner, get_complited, update_complited, clear_complited, \
+from app import polls, homework
+from app.db_work import get_users, is_admin, save_user, get_homework
+from app.keyboards import get_buttons, get_poll, get_poll_end
+from app.file_work import update_results, get_results, get_winner, get_complited, update_complited, clear_complited, \
     new_results
 
 message_data = []
@@ -79,7 +77,7 @@ async def download_schedule(message: Message):
 
 @dp.callback_query(F.data == 'button_schedule')  # [2]
 async def get_schedule(callback: CallbackQuery):
-    document = FSInputFile('data/schedule.pdf')
+    document = FSInputFile('../data/schedule.pdf')
     await bot.send_document(callback.from_user.id, document)
     await callback.answer()
 
@@ -133,7 +131,7 @@ async def send_poll(callback: CallbackQuery):
     for e in teg_id:
         if is_admin(callback.from_user.id):
             await bot.send_message(int(e[0]), "Новый опрос",
-                               reply_markup=get_poll(polls.user_data+['Узнать результаты']))
+                                   reply_markup=get_poll(polls.user_data + ['Узнать результаты']))
         else:
             await bot.send_message(int(e[0]), "Новый опрос",
                                    reply_markup=get_poll(polls.user_data))

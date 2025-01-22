@@ -1,2 +1,2 @@
-aiogram~=3.10.0
-python-decouple~=3.8
+aiogram~=3.17.0
+python-decouple~=3.11

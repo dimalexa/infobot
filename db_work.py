@@ -3,7 +3,7 @@ import sqlite3
 
 
 async def save_user(teg_id):
-    connection = sqlite3.connect('../data/users_data.db')
+    connection = sqlite3.connect('data/users_data.db')
     cursor = connection.cursor()
     cursor.execute('''
     INSERT INTO registration (telegram_id) VALUES (?)
@@ -14,7 +14,7 @@ async def save_user(teg_id):
 
 
 def get_users():
-    connection = sqlite3.connect('../data/users_data.db')
+    connection = sqlite3.connect('data/users_data.db')
     cursor = connection.cursor()
     cursor.execute('''
     SELECT telegram_id FROM registration
@@ -27,7 +27,7 @@ def get_users():
 
 
 def is_admin(teg_id):
-    connection = sqlite3.connect('../data/users_data.db')
+    connection = sqlite3.connect('data/users_data.db')
     cursor = connection.cursor()
     cursor.execute('''
         SELECT id FROM admin  WHERE telegram_id == ?
@@ -39,7 +39,7 @@ def is_admin(teg_id):
 
 
 async def save_homework(subject, text, files):
-    connection = sqlite3.connect('../data/users_data.db')
+    connection = sqlite3.connect('data/users_data.db')
     cursor = connection.cursor()
     cursor.execute('''
             UPDATE homework SET text = ? WHERE subject = ?
@@ -67,7 +67,7 @@ async def save_homework(subject, text, files):
 
 
 async def get_homework(subject):
-    connection = sqlite3.connect('../data/users_data.db')
+    connection = sqlite3.connect('data/users_data.db')
     cursor = connection.cursor()
     cursor.execute('''
         SELECT text, file1, file2, file3 FROM homework WHERE subject = ?

@@ -8,9 +8,9 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types.input_file import FSInputFile
 
 from code import polls, homework
-from code.db_work import get_users, is_admin, save_user, get_homework
-from code.keyboards import get_buttons, get_poll, get_poll_end
-from code.file_work import update_results, get_results, get_winner, get_complited, update_complited, clear_complited, \
+from db_work import get_users, is_admin, save_user, get_homework
+from keyboards import get_buttons, get_poll, get_poll_end
+from file_work import update_results, get_results, get_winner, get_complited, update_complited, clear_complited, \
     new_results
 
 message_data = []

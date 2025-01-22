@@ -1,4 +1,4 @@
-from app.polls import user_data
+from code.polls import user_data
 
 
 def get_results():

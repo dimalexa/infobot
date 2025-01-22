@@ -5,7 +5,7 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery, ContentType
 
 from db_work import save_homework
-from app.keyboards import get_subjects, get_file, get_buttons
+from code.keyboards import get_subjects, get_file, get_buttons
 
 router = Router()
 

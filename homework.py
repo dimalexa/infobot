@@ -36,7 +36,7 @@ async def hw_text(message: Message, state: FSMContext):
     result_text = message.text + '\n' + 'Обновлено '+ time_now
     await state.update_data(text=result_text)
     await state.update_data(counter=1)
-    await message.answer('Новое домашнее задание сохранено', reply_markup=get_file())
+    await message.answer('Будут ли еще файлы?', reply_markup=get_file())
 
 
 @router.callback_query(F.data == "file_yes")
@@ -73,7 +73,7 @@ async def hw_text(callback: CallbackQuery, state: FSMContext):
             files.append(data[f'file{i}'])
     await save_homework(subject, text, files)
     await state.clear()
-    await callback.message.answer('Файл сохранен', reply_markup=get_buttons(callback.from_user.id))
+    await callback.message.answer('Новое домашнее задание сохранено', reply_markup=get_buttons(callback.from_user.id))
     await callback.answer()
 
 

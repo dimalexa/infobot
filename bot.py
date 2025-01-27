@@ -34,7 +34,7 @@ async def say_hello(message: Message):
     users = get_users()
     if message.from_user.id not in [x[0] for x in users]:
         await save_user(message.from_user.id)
-    await message.answer("Hello! вот что я умею: ", reply_markup=get_buttons(message.from_user.id))
+    await message.answer("Привет! вот что я умею: ", reply_markup=get_buttons(message.from_user.id))
 
 @dp.callback_query(F.data == "button_send")
 async def getting_message(callback: CallbackQuery,  state: FSMContext):
@@ -70,7 +70,7 @@ async def update_schedule(callback: CallbackQuery,  state: FSMContext):
 async def download_schedule(message: Message):
     await bot.download(
         message.document.file_id,
-        destination=f"./schedule.pdf"
+        destination=f"./data/schedule.pdf"
     )
     await message.answer('Расписание обновлено', reply_markup=get_buttons(message.from_user.id))
 
@@ -175,6 +175,7 @@ async def poll_end(callback: CallbackQuery):
     else:
         await callback.message.answer("Отлично, продолжаем голосование!")
         await callback.answer()
+
 
 async def main():
     dp.include_routers(homework.router, polls.router)

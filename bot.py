@@ -64,7 +64,7 @@ async def update_schedule(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer('Пришлите файл')
     await callback.answer()
 
-@dp.message(Admin.get_msg_file)
+@dp.message(Admin.get_msg_file, F.content_type == ContentType.DOCUMENT)
 async def send_file(message: Message, state: FSMContext):
     teg_id = get_users()
     await state.clear()
@@ -72,9 +72,18 @@ async def send_file(message: Message, state: FSMContext):
         await bot.send_document(int(e[0]), message.document.file_id)
     await message.answer('Файл отправлен', reply_markup=get_message_file())
 
+
+@dp.message(Admin.get_msg_file, F.photo)
+async def send_file(message: Message, state: FSMContext):
+    teg_id = get_users()
+    await state.clear()
+    for e in teg_id:
+        await bot.send_photo(int(e[0]), message.photo[-1].file_id)
+    await message.answer('Файл отправлен', reply_markup=get_message_file())
+
 @dp.callback_query(F.data == 'file_m_no')  # [2]
-async def update_schedule(callback: CallbackQuery, state: FSMContext):
-    await callback.message.answer('Отправка сообщений завершена', reply_markup=get_buttons(callback.from_user.id))
+async def update_schedule(callback: CallbackQuery):
+    await callback.message.answer('Отправка сообщения завершена', reply_markup=get_buttons(callback.from_user.id))
     await callback.answer()
 
 

@@ -9,7 +9,7 @@ from aiogram.types.input_file import FSInputFile
 
 import polls, homework
 from db_work import get_users, is_admin, save_user, get_homework
-from keyboards import get_buttons, get_poll, get_poll_end
+from keyboards import get_buttons, get_poll, get_poll_end, get_message_file
 from file_work import update_results, get_results, get_winner, get_complited, update_complited, clear_complited, \
     new_results
 
@@ -20,6 +20,7 @@ class Admin(StatesGroup):
     getting_message = State()
     getting_happy_birthday_text = State()
     getting_happy_birthday_photo = State()
+    get_msg_file = State()
 
 # Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
@@ -42,6 +43,7 @@ async def getting_message(callback: CallbackQuery,  state: FSMContext):
         await state.set_state(Admin.getting_message)
         await callback.message.answer(
         "Введите ваше сообщение - оно будет отправлено всем пользователям бота!")
+        await callback.answer()
     else:
         await callback.answer(
             "Эта функция доступна только админу:(", reply_markup=get_buttons(callback.from_user.id))
@@ -53,7 +55,27 @@ async def sending_message(message: Message,  state: FSMContext):
     await state.clear()
     for e in teg_id:
         await bot.send_message(int(e[0]), f'{message.text}')
-    await message.answer("Ваше сообщение отправлено!", reply_markup=get_buttons(message.from_user.id))
+    await message.answer("Ваше сообщение отправлено!", reply_markup=get_message_file())
+
+
+@dp.callback_query(F.data == 'file_m_yes')  # [2]
+async def update_schedule(callback: CallbackQuery, state: FSMContext):
+    await state.set_state(Admin.get_msg_file)
+    await callback.message.answer('Пришлите файл')
+    await callback.answer()
+
+@dp.message(Admin.get_msg_file)
+async def send_file(message: Message, state: FSMContext):
+    teg_id = get_users()
+    await state.clear()
+    for e in teg_id:
+        await bot.send_document(int(e[0]), message.document.file_id)
+    await message.answer('Файл отправлен', reply_markup=get_message_file())
+
+@dp.callback_query(F.data == 'file_m_no')  # [2]
+async def update_schedule(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer('Отправка сообщений завершена', reply_markup=get_buttons(callback.from_user.id))
+    await callback.answer()
 
 
 @dp.callback_query(F.data == 'button_update')  # [2]
@@ -61,6 +83,7 @@ async def update_schedule(callback: CallbackQuery,  state: FSMContext):
     if is_admin(callback.from_user.id):
         await state.set_state(Admin.setting_schedule)
         await  callback.message.answer("Пришлите новое расписание в формате pdf")
+        await callback.answer()
     else:
         await callback.answer(
             "Эта функция доступна только админу:(", reply_markup=get_buttons(callback.from_user.id))
@@ -87,6 +110,7 @@ async def update_schedule(callback: CallbackQuery,  state: FSMContext):
     if is_admin(callback.from_user.id):
         await state.set_state(Admin.getting_happy_birthday_text)
         await  callback.message.answer("Введите текст поздравления")
+        await callback.answer()
     else:
         await callback.answer(
             "Эта функция доступна только админу:(", reply_markup=get_buttons(callback.from_user.id))

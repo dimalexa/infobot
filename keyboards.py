@@ -1,5 +1,5 @@
 from aiogram import types
-from consts import SUBJECTS, DAYS
+from consts import SUBJECTS
 from db_work import is_admin
 
 
@@ -7,15 +7,6 @@ def get_subjects(id):
     buttons = [[]]
     for e in SUBJECTS:
         buttons[0].append(types.InlineKeyboardButton(text=f"{e}", callback_data=f"subjects_{id}_{e}"))
-
-    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
-    return keyboard
-
-
-def get_days(id):
-    buttons = [[]]
-    for e in DAYS:
-        buttons[0].append(types.InlineKeyboardButton(text=f"{e}", callback_data=f"days_{id}_{e}"))
 
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard
@@ -71,6 +62,14 @@ def get_poll_end():
     buttons = [[]]
     buttons[0].append(types.InlineKeyboardButton(text="Завершить опрос", callback_data=f"end_yes"))
     buttons[0].append(types.InlineKeyboardButton(text="Продолжить голосование", callback_data=f"end_no"))
+
+    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
+    return keyboard
+
+def get_message_file():
+    buttons = [[]]
+    buttons[0].append(types.InlineKeyboardButton(text="Хочу прислать ещё файл", callback_data=f"file_m_yes"))
+    buttons[0].append(types.InlineKeyboardButton(text="Все, файлов больше не будет", callback_data=f"file_m_no"))
 
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard

@@ -62,6 +62,21 @@ async def hw_file(message: Message, state: FSMContext):
     await message.answer('Файл сохранен', reply_markup=get_file())
 
 
+@router.message(Hw.get_hw_file, F.photo)
+async def hw_photo(message: Message, state: FSMContext):
+    data = await state.get_data()
+    counter = data['counter']
+    if counter == 1:
+        await state.update_data(file1=message.photo[-1].file_id)
+    if counter == 2:
+        await state.update_data(file2=message.photo[-1].file_id)
+    if counter == 3:
+        await state.update_data(file3=message.photo[-1].file_id)
+    counter += 1
+    await state.update_data(counter=counter)
+    await state.set_state(Hw.get_hw_file_done)
+    await message.answer('Файл сохранен', reply_markup=get_file())
+
 
 @router.callback_query(F.data == "file_no")
 async def hw_text(callback: CallbackQuery, state: FSMContext):
